@@ -10,21 +10,22 @@ import (
 )
 
 var (
-	host = "localhost"
-	user = "postgres"
+	host     = "localhost"
+	user     = "postgres"
 	password = "jagongoding"
-	dbPort = "5432"
-	dbname = "simple-api"
-	db	*gorm.DB
-	err error
+	dbPort   = "5432"
+	dbname   = "simple-api"
+	db       *gorm.DB
+	err      error
 )
 
-func StartDB(){
+// db
+func StartDB() {
 	config := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", host, user, password, dbname, dbPort)
 	dsn := config
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
-	if err != nil{
+	if err != nil {
 		log.Fatal("error connection to database :", err)
 	}
 
@@ -32,6 +33,6 @@ func StartDB(){
 	db.Debug().AutoMigrate(models.User{}, models.Product{})
 }
 
-func GetDB() *gorm.DB{
+func GetDB() *gorm.DB {
 	return db
 }

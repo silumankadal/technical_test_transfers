@@ -2,18 +2,20 @@ package middlewares
 
 import (
 	"go-jwt/helpers"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
-func Authentication() gin.HandlerFunc{
-	return func(c *gin.Context){
+// authentication
+func Authentication() gin.HandlerFunc {
+	return func(c *gin.Context) {
 		verifyToken, err := helpers.VerifyToken(c)
 		_ = verifyToken
 
-		if err != nil{
+		if err != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-				"error": "Unauthenticated",
+				"error":   "Unauthenticated",
 				"message": err.Error(),
 			})
 			return

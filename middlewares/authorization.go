@@ -1,21 +1,23 @@
 package middlewares
 
 import (
-	"strconv"
 	"go-jwt/database"
 	"go-jwt/models"
-	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
+
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 )
 
-func ProductAuthorization() gin.HandlerFunc{
-	return func(c *gin.Context){
+// authorization
+func ProductAuthorization() gin.HandlerFunc {
+	return func(c *gin.Context) {
 		db := database.GetDB()
 		productId, err := strconv.Atoi(c.Param("productId"))
-		if err != nil{
+		if err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-				"error": "Bad Request",
+				"error":   "Bad Request",
 				"message": "invalid parameter",
 			})
 			return
@@ -26,17 +28,17 @@ func ProductAuthorization() gin.HandlerFunc{
 
 		err = db.Select("user_id").First(&Product, uint(productId)).Error
 
-		if err != nil{
+		if err != nil {
 			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
-				"error": "Data Not Found",
+				"error":   "Data Not Found",
 				"message": "data doesn't exist",
 			})
 			return
 		}
 
-		if Product.UserID != userID{
+		if Product.UserID != userID {
 			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
-				"error": "Unauthorized",
+				"error":   "Unauthorized",
 				"message": "you are not allowed to access this data",
 			})
 			return
