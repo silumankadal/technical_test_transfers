@@ -1,11 +1,11 @@
 package main
 
 import (
-	"go-jwt/router"
 	"go-jwt/database"
+	"go-jwt/router"
 )
 
-func main(){
+func main() {
 	database.StartDB()
 	r := router.StartApp()
 	r.Run(":8000")
